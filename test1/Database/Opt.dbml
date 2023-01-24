@@ -1,0 +1,261 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Optics" Class="OptDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=.;Initial Catalog=Optics;Persist Security Info=True;User ID=sa" SettingsObjectName="test1.Properties.Settings" SettingsPropertyName="OpticsConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Job" Member="Jobs">
+    <Type Name="Job">
+      <Column Name="JobId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="JobDesc" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="JobISActive" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Job_Employee" Member="Employees" ThisKey="JobId" OtherKey="JobId" Type="Employee" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Employee" Member="Employees">
+    <Type Name="Employee">
+      <Column Name="EmployeeId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="EmployeeName" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="JobId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UserNameLog" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="EmployeeSalary" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="EmployeePhone" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="EmployeeAddress" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="EmployeeIsActive" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Employee_InvoiceMaster" Member="InvoiceMasters" ThisKey="EmployeeId" OtherKey="EmployeeId" Type="InvoiceMaster" />
+      <Association Name="Employee_Treasury" Member="Treasuries" ThisKey="EmployeeId" OtherKey="EmployeeIdForClose" Type="Treasury" />
+      <Association Name="Job_Employee" Member="Job" ThisKey="JobId" OtherKey="JobId" Type="Job" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Company" Member="Companies">
+    <Type Name="Company">
+      <Column Name="CompanyId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CompaneDesc" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="CompanyTaxFileNumber" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="CompanyCommerceFileNumber" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="CompanyPhone" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="CompanyFax" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="CompanyAddress" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="CompanyLogo" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="CompanyIsActive" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CustomerAccount" Member="CustomerAccounts">
+    <Type Name="CustomerAccount">
+      <Column Name="SuppliersAccountId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CustomerId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="InvoiceId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="InvoiceNetValue" Type="System.Decimal" DbType="Decimal(20,2)" CanBeNull="true" />
+      <Association Name="CustomerAccount_CustomerPayment" Member="CustomerPayments" ThisKey="SuppliersAccountId" OtherKey="SuppliersAccountId" Type="CustomerPayment" />
+      <Association Name="Customer_CustomerAccount" Member="Customer" ThisKey="CustomerId" OtherKey="CustomerId" Type="Customer" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CustomerPayment" Member="CustomerPayments">
+    <Type Name="CustomerPayment">
+      <Column Name="CustomerPaymentId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SuppliersAccountId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CustomerId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PaymentReceiptValue" Type="System.Decimal" DbType="Decimal(20,2)" CanBeNull="true" />
+      <Column Name="PaymentReceiptDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="PaymentReceiptNo" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TreasuryId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PayMentType" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="CustomerAccount_CustomerPayment" Member="CustomerAccount" ThisKey="SuppliersAccountId" OtherKey="SuppliersAccountId" Type="CustomerAccount" IsForeignKey="true" DeleteRule="CASCADE" />
+      <Association Name="Treasury_CustomerPayment" Member="Treasury" ThisKey="TreasuryId" OtherKey="TreasuryId" Type="Treasury" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Customers" Member="Customers">
+    <Type Name="Customer">
+      <Column Name="CustomerId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CustomerName" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="CustomerPhone1" Type="System.String" DbType="NVarChar(15)" CanBeNull="true" />
+      <Column Name="CustomerPhone2" Type="System.String" DbType="NVarChar(15)" CanBeNull="true" />
+      <Column Name="CustomerAddress" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="CustomerEmail" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="CustomerNotes" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="CustomerIsActive" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="CustomerFlag" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FirstPerioudBalance" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Association Name="Customer_CustomerAccount" Member="CustomerAccounts" ThisKey="CustomerId" OtherKey="CustomerId" Type="CustomerAccount" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Doctor" Member="Doctors">
+    <Type Name="Doctor">
+      <Column Name="DoctorId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DoctorName" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="DoctorAddress" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="DoctorPhone" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="AppointmentFrom" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="AppointmentTo" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="IsActive" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.DocType" Member="DocTypes">
+    <Type Name="DocType">
+      <Column Name="DocTypeId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DocTypeDesc" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="TreasuryFactor" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="StoreFactor" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CustomerFactor" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SupplierFactor" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Association Name="DocType_InvoiceMaster" Member="InvoiceMasters" ThisKey="DocTypeId" OtherKey="DocTypeId" Type="InvoiceMaster" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[Group]" Member="Groups">
+    <Type Name="Group">
+      <Column Name="GroupId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="GroupDesc" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="GroupIsActive" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Group_Item" Member="Items" ThisKey="GroupId" OtherKey="GroupId" Type="Item" />
+    </Type>
+  </Table>
+  <Table Name="dbo.InvoiceDetailForLenses" Member="InvoiceDetailForLenses">
+    <Type Name="InvoiceDetailForLense">
+      <Column Name="InvoiceDetailForLensesId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="InvoiceId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ItemId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LensesDirection" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Sph" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Cyl" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ItemQty" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DoubleSellPrice" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="SingleSellPrice" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="ItemTotalValue" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="ItemDiscount" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="ItemNetValue" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Association Name="InvoiceMaster_InvoiceDetailForLense" Member="InvoiceMaster" ThisKey="InvoiceId" OtherKey="InvoiceId" Type="InvoiceMaster" IsForeignKey="true" DeleteRule="CASCADE" />
+      <Association Name="Item_InvoiceDetailForLense" Member="Item" ThisKey="ItemId" OtherKey="ItemId" Type="Item" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.InvoiceDetialForShanbar" Member="InvoiceDetialForShanbars">
+    <Type Name="InvoiceDetialForShanbar">
+      <Column Name="InvoiceDetialForShanbarId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="InvoiceId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ItemId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SellPrice" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="BuyPrice" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="ItemQty" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ItemTotalValue" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="ItemDiscount" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="ItemNetValue" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Association Name="InvoiceMaster_InvoiceDetialForShanbar" Member="InvoiceMaster" ThisKey="InvoiceId" OtherKey="InvoiceId" Type="InvoiceMaster" IsForeignKey="true" DeleteRule="CASCADE" />
+      <Association Name="Item_InvoiceDetialForShanbar" Member="Item" ThisKey="ItemId" OtherKey="ItemId" Type="Item" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.InvoiceMaster" Member="InvoiceMasters">
+    <Type Name="InvoiceMaster">
+      <Column Name="InvoiceId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="InvoiceDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="InvoiceStatuId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DocTypeId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CustomerId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CustomerPhone1" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="CustomerPhone2" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="CustomerAddress" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="StoreId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="InvoiceTotalValue" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="InvoiceTotalDiscount" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="MasterOverAllDiscount" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="InvoiceNetValue" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="TotalPayedValue" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="TotalRestValue" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="TreasuryId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="EmployeeId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TotalNumberOfLenses" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TotalNumberOfShanbar" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IsClosed" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="IsRecieved" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="IsDiscarded" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="InvoiceMaster_InvoiceDetailForLense" Member="InvoiceDetailForLenses" ThisKey="InvoiceId" OtherKey="InvoiceId" Type="InvoiceDetailForLense" />
+      <Association Name="InvoiceMaster_InvoiceDetialForShanbar" Member="InvoiceDetialForShanbars" ThisKey="InvoiceId" OtherKey="InvoiceId" Type="InvoiceDetialForShanbar" />
+      <Association Name="DocType_InvoiceMaster" Member="DocType" ThisKey="DocTypeId" OtherKey="DocTypeId" Type="DocType" IsForeignKey="true" DeleteRule="CASCADE" />
+      <Association Name="Employee_InvoiceMaster" Member="Employee" ThisKey="EmployeeId" OtherKey="EmployeeId" Type="Employee" IsForeignKey="true" DeleteRule="CASCADE" />
+      <Association Name="InvoiceStatu_InvoiceMaster" Member="InvoiceStatu" ThisKey="InvoiceStatuId" OtherKey="InvoiceStatuId" Type="InvoiceStatu" IsForeignKey="true" DeleteRule="CASCADE" />
+      <Association Name="Store_InvoiceMaster" Member="Store" ThisKey="StoreId" OtherKey="StoreId" Type="Store" IsForeignKey="true" DeleteRule="CASCADE" />
+      <Association Name="Treasury_InvoiceMaster" Member="Treasury" ThisKey="TreasuryId" OtherKey="TreasuryId" Type="Treasury" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.InvoiceStatu" Member="InvoiceStatus">
+    <Type Name="InvoiceStatu">
+      <Column Name="InvoiceStatuId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="InvoiceStatuDesc" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="InvoiceStatu_InvoiceMaster" Member="InvoiceMasters" ThisKey="InvoiceStatuId" OtherKey="InvoiceStatuId" Type="InvoiceMaster" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Item" Member="Items">
+    <Type Name="Item">
+      <Column Name="ItemId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ItemDesc" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ItemBarcode" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="BuyPrice" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="SellPrice" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="SoldSellPrice" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="SoldQuantity" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="GroupId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ItemTypeId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SphStrenth" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="CylStrenth" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="DoubleSellPrice" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="SingleSellPrice" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="SignalTypeId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BeginingBalance" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ItemISActive" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Item_InvoiceDetailForLense" Member="InvoiceDetailForLenses" ThisKey="ItemId" OtherKey="ItemId" Type="InvoiceDetailForLense" />
+      <Association Name="Item_InvoiceDetialForShanbar" Member="InvoiceDetialForShanbars" ThisKey="ItemId" OtherKey="ItemId" Type="InvoiceDetialForShanbar" />
+      <Association Name="Item_ItemsStore" Member="ItemsStores" ThisKey="ItemId" OtherKey="ItemId" Type="ItemsStore" />
+      <Association Name="Group_Item" Member="Group" ThisKey="GroupId" OtherKey="GroupId" Type="Group" IsForeignKey="true" DeleteRule="CASCADE" />
+      <Association Name="ItemType_Item" Member="ItemType" ThisKey="ItemTypeId" OtherKey="ItemTypeId" Type="ItemType" IsForeignKey="true" DeleteRule="CASCADE" />
+      <Association Name="SignalType_Item" Member="SignalType" ThisKey="SignalTypeId" OtherKey="SignalTypeId" Type="SignalType" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ItemsStores" Member="ItemsStores">
+    <Type Name="ItemsStore">
+      <Column Name="ItemsStoreId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="StoreId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ItemId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ItemQuantityOnHand" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="ItemSellPrice" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="ItemBuyPrice" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="InvoiceNotes" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="Item_ItemsStore" Member="Item" ThisKey="ItemId" OtherKey="ItemId" Type="Item" IsForeignKey="true" DeleteRule="CASCADE" />
+      <Association Name="Store_ItemsStore" Member="Store" ThisKey="StoreId" OtherKey="StoreId" Type="Store" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ItemType" Member="ItemTypes">
+    <Type Name="ItemType">
+      <Column Name="ItemTypeId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ItemTypeDesc" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ItemTypeIsActive" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="ItemType_Item" Member="Items" ThisKey="ItemTypeId" OtherKey="ItemTypeId" Type="Item" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SignalType" Member="SignalTypes">
+    <Type Name="SignalType">
+      <Column Name="SignalTypeId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SignalTypeDesc" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="SignalType_Item" Member="Items" ThisKey="SignalTypeId" OtherKey="SignalTypeId" Type="Item" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Stores" Member="Stores">
+    <Type Name="Store">
+      <Column Name="StoreId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="StoreName" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="StoreAddress" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="StoreNotes" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="StoreIsActive" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Store_InvoiceMaster" Member="InvoiceMasters" ThisKey="StoreId" OtherKey="StoreId" Type="InvoiceMaster" />
+      <Association Name="Store_ItemsStore" Member="ItemsStores" ThisKey="StoreId" OtherKey="StoreId" Type="ItemsStore" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Treasury" Member="Treasuries">
+    <Type Name="Treasury">
+      <Column Name="TreasuryId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="OpenDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="OpenValue" Type="System.Decimal" DbType="Decimal(20,2)" CanBeNull="true" />
+      <Column Name="CurrentValue" Type="System.Decimal" DbType="Decimal(20,2)" CanBeNull="true" />
+      <Column Name="CloseValue" Type="System.Decimal" DbType="Decimal(20,2)" CanBeNull="true" />
+      <Column Name="EmployeeIdForClose" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ClosedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="IsClosed" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Treasury_CustomerPayment" Member="CustomerPayments" ThisKey="TreasuryId" OtherKey="TreasuryId" Type="CustomerPayment" />
+      <Association Name="Treasury_InvoiceMaster" Member="InvoiceMasters" ThisKey="TreasuryId" OtherKey="TreasuryId" Type="InvoiceMaster" />
+      <Association Name="Employee_Treasury" Member="Employee" ThisKey="EmployeeIdForClose" OtherKey="EmployeeId" Type="Employee" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>
